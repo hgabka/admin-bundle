@@ -1,0 +1,24 @@
+{
+  "name": "hgabka-admin",
+  "version": "1.0.25",
+  "description": "assets for hgabka-admin bundle",
+  "author": "Gabe",
+  "license": "ISC",
+  "dependencies": {
+    "ckeditor": "^4.12.1",
+    "clipboard": "^2.0.1",
+    "copy-webpack-plugin": "^4.5.2",
+    "fancybox": "^3.0.1",
+    "font-awesome": "^4.7.0",
+    "fontawesome": "^5.6.3",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "moment-with-locales-es6": "^1.0.1",
+    "popper.js": "^1.16.1"
+  },
+  "main": "assets/js/app",
+  "style": "assets/css/hg_admin.css",
+  "scripts": {
+    "postinstall": "cp -r assets/js/ckeditor $INIT_CWD/public && cp -r $INIT_CWD/node_modules/ckeditor/plugins/* $INIT_CWD/public/ckeditor/plugins/"
+  }
+}

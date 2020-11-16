@@ -1,0 +1,115 @@
+{% extends base_template %}
+{% set adminmenu = get_admin_menu() %}
+{% if lowestTopChild is not defined %}
+    {% set lowestTopChild = adminmenu.lowestTopChild %}
+    {% if lowestTopChild %}
+        {% set navigationChildren = lowestTopChild.navigationChildren %}
+    {% endif %}
+{% endif %}
+
+{% if page is defined %}
+    {%  set hideSidebar = hideSidebarInNodeEditAdmin(page) %}
+{%  else  %}
+    {%  set hideSidebar = false %}
+{%  endif %}
+            {% block body_attributes -%}
+                {{ parent() }} data-file-browse-url="{% if nodebundleisactive is defined and nodebundleisactive %}{{ path('HgabkaNodeBundle_ckselecturl') }}{% endif %}" data-image-browse-url="{% if mediabundleisactive is defined %}{{ path('HgabkaMediaBundle_chooser', {'type': 'image'}) }}{% endif %}"
+            {%- endblock -%}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    MORE_BUTTON_LABEL = '{{ 'kuma_js.auto_collapse.more_button_label' | trans | e('js') }}'
+</script>
+{% endblock %}
+
+
+{% block breadcrumb %}{% endblock %}
+
+{% block sonata_wrapper %}
+<div id="utils-wrapper">
+    <!-- Main Content -->
+    <main role="main" id="app__main" style="padding-top:50px;min-height:500px" class="container-fluid app__main app__main--has-sidebar {% block wrapper_classes %}{% endblock %}">
+
+        <div class="row">
+
+
+            <!-- App Sidebar -->
+            <aside id="app__sidebar" class="col-md-3 app__sidebar">
+                {% block admin_sidebar %}
+                    {% include "HgabkaUtilsBundle:Default:sidebar.html.twig" %}
+                {% endblock %}
+            </aside>
+
+
+            <!-- App Content - with sidebar -->
+            <div id="app__content" class="col-md-9 col-md-offset-3 col--padded app__content">
+
+                <!-- App Sidebar Toggle -->
+                <button type="button" id="app__sidebar-toggle" class="btn--reset app__sidebar-toggle" title="toggle sidebar">
+                        <span class="app__sidebar-toggle__show-icon">
+                            <i class="fa fa-caret-right"></i>
+                            <i class="fa fa-list-ul"></i>
+                        </span>
+                    <span class="app__sidebar-toggle__hide-icon">
+                            <i class="fa fa-caret-left"></i>
+                            <i class="fa fa-list-ul"></i>
+                        </span>
+                </button>
+                {% block admin_breadcrumb %}
+                    <ul class="breadcrumb app__content__breadcrumb">
+                        <li><a style="margin-left:55px;color:#333"href="{{ path('sonata_admin_dashboard') }}">« {{ 'kuma_admin.back'|trans }}</a></li>
+                    </ul>
+                {% endblock %}
+
+                {% block notice %}
+                    {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+                {% endblock notice %}
+
+                <!-- App Content - General Messages -->
+                {% block messages %}{% endblock %}
+
+
+                <!-- App Content - Header -->
+                {% block header %}
+                    <header class="app__content__header">
+                        <div class="row">
+                            {% block admin_title %}
+                                <div class="col-sm-6 col-md-8">
+                                    <h1 class="app__content__header__title">
+                                        {% block admin_content_title %}{% endblock %}
+                                    </h1>
+                                </div>
+                            {% endblock %}
+
+                            {% block extra_actions_header %}{% endblock %}
+                        </div>
+                    </header>
+                {% endblock %}
+
+
+                <!-- App Content - Content -->
+                {% block admin_content %}{% endblock %}
+
+            </div>
+        </div>
+
+    </main>
+</div>    
+  {#  {% block admin_javascripts %}
+        <script src="{{ asset('bundles/hgabkautils/picturefill/dist/picturefill.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/plupload/js/plupload.full.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/velocity/velocity.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/cargobay/src/toggle/js/jquery.toggle.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/cargobay/src/scroll-to-top/js/jquery.scroll-to-top.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/jstree/dist/jstree.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/jquery-typewatch/jquery.typewatch.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/Sortable/Sortable.min.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/bootstrap-colorpicker/bootstrap-colorpicker.js') }}"></script>
+        <script src="{{ asset('bundles/hgabkautils/js/hg_utils.js') }}"></script>
+        {% if mediabundleisactive %}
+        <script src="{{ asset('bundles/hgabkamedia/js/hg_media.js') }}"></script>
+        {% endif %}
+    {% endblock %} #}
+{% endblock %}
